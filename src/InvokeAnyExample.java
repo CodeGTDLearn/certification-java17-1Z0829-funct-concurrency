@@ -6,10 +6,12 @@ import java.util.stream.Stream;
 
 public class InvokeAnyExample {
   public static void main(String[] args) {
+
     Collection<Callable<IntSummaryStatistics>> taskList =
          List.of(
               () -> InvokeAnyExample.doSomething(3, 7),
-              () -> InvokeAnyExample.doSomething(100, 5) );
+              () -> InvokeAnyExample.doSomething(100, 5)
+         );
 
     ExecutorService poolService = null;
     try {
@@ -18,10 +20,14 @@ public class InvokeAnyExample {
       IntSummaryStatistics result =
            poolService.invokeAny(taskList, 1, TimeUnit.SECONDS);
 
-      if (result != null) System.out.println("Result: " + result);         }
+      if (result != null) System.out.println("Result: " + result);
+    }
     catch (InterruptedException | ExecutionException | TimeoutException e) {
-      e.printStackTrace();    }
-    finally {     if (poolService != null) poolService.shutdown();    }
+      e.printStackTrace();
+    }
+    finally {
+      if (poolService != null) poolService.shutdown();
+    }
   }
 
 
