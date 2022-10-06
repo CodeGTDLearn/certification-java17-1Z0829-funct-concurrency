@@ -7,7 +7,7 @@ public class CyclicBarrierExample {
     CyclicBarrier checkpoint =
          new CyclicBarrier(3,() -> {System.out.println("Checkpoint!!\n");});
 
-    Callable<Boolean> task2Actions = () -> {//Task with 2 Actions(doIt1+doIt2)
+    Callable<Boolean> task = () -> {//Task with 2 Actions(doIt1+doIt2)
       doIt(1);    // All threads execute doIt-1
       try {   checkpoint.await(5, TimeUnit.SECONDS); }
       catch (BrokenBarrierException e) {
@@ -16,14 +16,14 @@ public class CyclicBarrierExample {
       doIt(2);                    // All threads execute doIt-2
       return true;  };
 
-    ExecutorService service = Executors.newFixedThreadPool(2);
-    service.invokeAll(List.of(task2Actions, task2Actions));
+    ExecutorService service = Executors.newFixedThreadPool(3);
+    service.invokeAll(List.of(task, task, task));
     System.out.println("\nShutting service down");
     service.shutdown();
   }
   public static void doIt(int stage) throws Exception {
 
-    int ms = new Random().nextInt(5) * 1000;
+    int ms = new Random().nextInt(5) * 500;
     System.out.println(Thread.currentThread()
                              .getName() + " - Start doIt: " + stage);
     Thread.sleep(ms);

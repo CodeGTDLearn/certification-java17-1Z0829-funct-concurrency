@@ -12,23 +12,23 @@ public class SubmitExamples {
       Future<?> firstResult =
            service.submit(
                 () -> new Random()
-                     .ints(1, 1000)
-                     .limit(5)
+                     .ints(1, 10)
+                     .limit(3)
                      .forEach(System.out::println));
 
       while (! firstResult.isDone()) {
-        Thread.sleep(250);
+        Thread.sleep(3000);
       }
 
-      System.out.println("firstResult = " + firstResult);
-      System.out.println("firstResult.get() = " + firstResult.get());
+      System.out.println("\nSubmit Runnable: " + firstResult);
+      System.out.println("Submit Runnable: .get() = " + firstResult.get());
     }
     catch (InterruptedException | ExecutionException e) {
       e.printStackTrace();
     }
-    finally {
-      if (service != null) service.shutdown();
-    }
+//    finally {
+//      if (service != null) service.shutdown();
+//    }
     //-------------------------------------------------------------------
 
     Future<String> futureResult =
@@ -48,9 +48,9 @@ public class SubmitExamples {
       }
     }
 
-    System.out.println("futureResult = " + futureResult);
+    System.out.println("\nSubmit Runnable+Result: " + futureResult);
     try {
-      System.out.println("futureResult = " + futureResult.get());
+      System.out.println("Submit Runnable+MyResult: " + futureResult.get());
     }
     catch (InterruptedException | ExecutionException e) {
       e.printStackTrace();
@@ -65,11 +65,11 @@ public class SubmitExamples {
          );
 
     try {
-      System.out.println("thirdResult = " + thirdResult.get(5, TimeUnit.SECONDS));
+      System.out.println("\nSubmit Callable Summary: " + thirdResult.get(5, TimeUnit.SECONDS));
     }
     catch (InterruptedException | ExecutionException | TimeoutException e) {
       e.printStackTrace();
     }
-    System.out.println("thirdResult = " + thirdResult);
+    System.out.println("Submit Callable: " + thirdResult);
   }
 }
